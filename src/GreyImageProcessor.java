@@ -78,7 +78,7 @@ public class GreyImageProcessor {
 
         for (int i = 0;i < width;i++) {
             for (int j = 0;j < height;j++) {
-                image[i][j] = (int) s[image[i][j]];
+                image[i][j] = (int) Math.round(s[image[i][j]]);
             }
         }
     }
@@ -140,6 +140,40 @@ public class GreyImageProcessor {
             for (int j = 0;j < height;j++) {
                 if (image[i][j] < threshold) { image[i][j] = 0; }
                 else { image[i][j] = 255; }
+            }
+        }
+    }
+
+    /*
+    f(x) = x ** (gamma)
+     */
+    public void power(double gamma) {
+        for (int i = 0;i < width;i++) {
+            for (int j = 0;j < height;j++) {
+                image[i][j] = (int) Math.pow((double)image[i][j], gamma);
+            }
+        }
+    }
+
+    /*
+    f(x) = b ** (c * (x - a))
+     */
+    public void exponential(double b, double c, double a) {
+        for (int i = 0;i < width;i++) {
+            for (int j = 0;j < height;j++) {
+                image[i][j] = (int) (1 / (Math.pow(b, (c * (image[i][j] - 1. / a))) - 1));
+            }
+        }
+    }
+
+    /*
+    f(x) = a + b log_c(1 + x)
+     */
+    public void log(double a, double b, double c) {
+        for (int i = 0;i < width;i++) {
+            for (int j = 0;j < height;j++) {
+                double x = 1. / image[i][j];
+                image[i][j] = (int) (1. / (a + b * Math.log(1 + x) / Math.log(c)));
             }
         }
     }
